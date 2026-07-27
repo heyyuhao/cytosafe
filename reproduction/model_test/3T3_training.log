@@ -1,0 +1,64 @@
+19:48:21  ======================================================================
+19:48:21  Dataset       : 3T3
+19:48:21  Output dir    : /Users/I753053/Documents/yuhao_codebase/cytosafe/reproduction/model
+19:48:21  HPO iterations: 10
+19:48:21  CV folds      : 5
+19:48:21  Random state  : 42
+19:48:21  Metric        : F1 (pos_label=1, cytotoxic class) — matches author source code
+19:48:21  ======================================================================
+19:48:23  X_train : (19233, 1024)  cytotoxic=3,206  non-toxic=16,027
+19:48:23  X_test  : (4809, 1024)   cytotoxic=801  non-toxic=4,008
+19:48:23  (Test set locked — not used until notebook 05)
+19:48:23  
+19:48:23  Starting Bayesian HPO: 10 iterations × 5-fold CV
+19:48:23  Each line: GP proposes hyperparams → 5-fold CV on TRAIN → mean F1
+19:48:23  
+19:48:44  [Iter   1/10] mean_CV_F1=0.8611  best_so_far=0.8611  ← NEW BEST  | n_estimators=0.7654820824760737  learning_rate=0.0996899578657341  num_leaves=9  max_depth=66  min_child_samples=436  subsample=147  colsample_bytree=0.0003252929307041166  reg_alpha=0.0001015191196076777  reg_lambda=0.7930175461090434
+19:49:02  [Iter   2/10] mean_CV_F1=0.8605  best_so_far=0.8611  | n_estimators=0.629185830986374  learning_rate=0.27922827937905725  num_leaves=11  max_depth=62  min_child_samples=168  subsample=41  colsample_bytree=0.12328179198740331  reg_alpha=0.02064180452030803  reg_lambda=0.5589884416790006
+19:49:11  [Iter   3/10] mean_CV_F1=0.6858  best_so_far=0.8611  | n_estimators=0.7643458710377254  learning_rate=0.012176490535249102  num_leaves=6  max_depth=23  min_child_samples=158  subsample=64  colsample_bytree=0.037008240905721024  reg_alpha=0.004308162214963292  reg_lambda=0.9076255198638874
+19:49:32  [Iter   4/10] mean_CV_F1=0.8652  best_so_far=0.8652  ← NEW BEST  | n_estimators=0.5737099059755859  learning_rate=0.14354208707950802  num_leaves=7  max_depth=48  min_child_samples=418  subsample=108  colsample_bytree=0.24202560100275386  reg_alpha=0.0018956439766024658  reg_lambda=0.6921313002458519
+19:49:47  [Iter   5/10] mean_CV_F1=0.7528  best_so_far=0.8652  | n_estimators=0.6162570141151325  learning_rate=0.02287898124633694  num_leaves=10  max_depth=32  min_child_samples=131  subsample=53  colsample_bytree=0.00011577739016624141  reg_alpha=0.0001314870814378331  reg_lambda=0.5810131236160887
+19:50:04  [Iter   6/10] mean_CV_F1=0.8663  best_so_far=0.8663  ← NEW BEST  | n_estimators=0.9190831912766004  learning_rate=0.2911777046632956  num_leaves=10  max_depth=51  min_child_samples=200  subsample=56  colsample_bytree=0.2507466933248837  reg_alpha=0.1174130027396949  reg_lambda=0.5953269597477608
+19:50:15  [Iter   7/10] mean_CV_F1=0.8433  best_so_far=0.8663  | n_estimators=0.9835656124421499  learning_rate=0.13107515436116274  num_leaves=7  max_depth=23  min_child_samples=157  subsample=131  colsample_bytree=0.006185403252708795  reg_alpha=0.07429340260700566  reg_lambda=0.8387523661634131
+19:50:21  [Iter   8/10] mean_CV_F1=0.7882  best_so_far=0.8663  | n_estimators=0.7552445232092422  learning_rate=0.060036024746812904  num_leaves=9  max_depth=8  min_child_samples=74  subsample=51  colsample_bytree=0.00033949770615763743  reg_alpha=0.001560469803612543  reg_lambda=0.7415639432163017
+19:50:39  [Iter   9/10] mean_CV_F1=0.8564  best_so_far=0.8663  | n_estimators=0.546027248452608  learning_rate=0.21074419549602455  num_leaves=10  max_depth=94  min_child_samples=252  subsample=91  colsample_bytree=0.003059361692352409  reg_alpha=0.00014690761732526227  reg_lambda=0.7261520133742665
+19:50:43  [Iter  10/10] mean_CV_F1=0.6712  best_so_far=0.8663  | n_estimators=0.6847684887002612  learning_rate=0.04468940797636279  num_leaves=5  max_depth=81  min_child_samples=82  subsample=117  colsample_bytree=0.08645785125274702  reg_alpha=0.010413576165988031  reg_lambda=0.8249833651331806
+19:50:52  
+19:50:52  ======================================================================
+19:50:52  HPO COMPLETE
+19:50:52    Total time      : 2.5 min
+19:50:52    Iterations run  : 10/10
+19:50:52    Winning iter    : 6
+19:50:52    Best CV F1      : 0.8663 ± 0.0089
+19:50:52    Best hyperparams:
+19:50:52      colsample_bytree       = 0.9190831912766004
+19:50:52      learning_rate          = 0.2911777046632956
+19:50:52      max_depth              = 10
+19:50:52      min_child_samples      = 51
+19:50:52      n_estimators           = 200
+19:50:52      num_leaves             = 56
+19:50:52      reg_alpha              = 0.2507466933248837
+19:50:52      reg_lambda             = 0.1174130027396949
+19:50:52      subsample              = 0.5953269597477608
+19:50:52  
+19:50:52  All iterations ranked by mean CV F1:
+19:50:52    Rank   Iter   mean_CV_F1
+19:50:52    1      6      0.8663  ← BEST
+19:50:52    2      4      0.8652
+19:50:52    3      1      0.8611
+19:50:52    4      2      0.8605
+19:50:52    5      9      0.8564
+19:50:52    6      7      0.8433
+19:50:52    7      8      0.7882
+19:50:52    8      5      0.7528
+19:50:52    9      3      0.6858
+19:50:52    10     10     0.6712
+19:50:52  ======================================================================
+19:50:52  
+19:50:52  Final model refitted on full X_train with best hyperparams.
+19:50:52  Model saved  : ../model/3T3_lgbm_ecfp4.joblib
+19:50:52  Params saved : ../model/3T3_best_params.json
+19:50:52  Full log     : ../model/3T3_training.log
+19:50:52  
+19:50:52  Next: run notebook 05 to evaluate on the test set (Table 1 metrics).
+19:50:52  ======================================================================

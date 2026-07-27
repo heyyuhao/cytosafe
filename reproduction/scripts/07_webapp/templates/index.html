@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CytoSafe — Cytotoxicity Predictor</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f4f6f9;
+      color: #1a1a2e;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      color: white;
+      padding: 28px 40px;
+      border-bottom: 3px solid #e94560;
+    }
+    header h1 { font-size: 1.9rem; font-weight: 700; letter-spacing: -0.5px; }
+    header p  { margin-top: 6px; color: #a0aec0; font-size: 0.92rem; }
+
+    /* ── Main layout ── */
+    main { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
+
+    /* ── Input form ── */
+    .input-card {
+      background: white;
+      border-radius: 12px;
+      padding: 28px 32px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+      margin-bottom: 32px;
+    }
+    .input-card h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: 16px; }
+    .input-row {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    textarea {
+      flex: 1;
+      min-width: 260px;
+      padding: 12px 14px;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-family: 'SFMono-Regular', 'Consolas', monospace;
+      resize: vertical;
+      min-height: 54px;
+      transition: border-color .2s;
+    }
+    textarea:focus { outline: none; border-color: #e94560; }
+    button[type=submit] {
+      padding: 12px 28px;
+      background: #e94560;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background .2s;
+    }
+    button[type=submit]:hover { background: #c73652; }
+
+    .examples {
+      margin-top: 12px;
+      font-size: 0.82rem;
+      color: #718096;
+    }
+    .examples span { font-weight: 600; }
+    .example-link {
+      background: none; border: none; color: #4a90d9; cursor: pointer;
+      font-size: 0.82rem; text-decoration: underline; padding: 0;
+    }
+
+    /* ── Example table ── */
+    .examples-table-wrap {
+      margin-top: 18px;
+    }
+    .examples-label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #4a5568;
+      margin-bottom: 8px;
+    }
+    .examples-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+    }
+    .examples-table th {
+      background: #f7fafc;
+      color: #4a5568;
+      font-weight: 700;
+      padding: 6px 10px;
+      text-align: left;
+      border-bottom: 2px solid #e2e8f0;
+    }
+    .examples-table td {
+      padding: 5px 10px;
+      border-bottom: 1px solid #f0f4f8;
+      vertical-align: middle;
+    }
+    .examples-table tr:hover td { background: #f7fafc; }
+    .ex-smiles {
+      font-family: monospace;
+      font-size: 0.75rem;
+      color: #2d3748;
+      max-width: 340px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .ex-badge {
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .ex-badge.toxic    { background:#fff5f5; color:#c53030; border:1px solid #fc8181; }
+    .ex-badge.nontoxic { background:#f0fff4; color:#276749; border:1px solid #68d391; }
+    .ex-btn {
+      padding: 3px 10px;
+      border-radius: 6px;
+      border: 1px solid #cbd5e0;
+      background: white;
+      font-size: 0.75rem;
+      cursor: pointer;
+      color: #4a90d9;
+      white-space: nowrap;
+    }
+    .ex-btn:hover { background: #ebf8ff; border-color: #4a90d9; }
+    .error-banner {
+      background: #fff5f5;
+      border: 1px solid #fc8181;
+      border-radius: 8px;
+      padding: 14px 18px;
+      color: #c53030;
+      margin-bottom: 24px;
+      font-size: 0.9rem;
+    }
+
+    /* ── Cell-line comparison grid ── */
+    .cell-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 36px;
+    }
+    @media (max-width: 780px) { .cell-grid { grid-template-columns: 1fr; } }
+
+    .cell-card {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    }
+    .cell-card h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #f0f4f8;
+    }
+
+    /* ── Prediction badge ── */
+    .pred-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .badge {
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+    .badge-toxic    { background: #fff5f5; color: #c53030; border: 1.5px solid #fc8181; }
+    .badge-nontoxic { background: #f0fff4; color: #276749; border: 1.5px solid #68d391; }
+    .confidence {
+      font-size: 0.85rem;
+      color: #718096;
+    }
+    .conf-bar-wrap {
+      height: 7px;
+      background: #edf2f7;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-top: 4px;
+      width: 140px;
+    }
+    .conf-bar { height: 100%; border-radius: 4px; }
+    .conf-toxic    { background: #fc8181; }
+    .conf-nontoxic { background: #68d391; }
+
+    /* ── Similarity map ── */
+    .sim-map-title {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #4a5568;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .sim-map img {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+    }
+    .legend {
+      display: flex;
+      gap: 16px;
+      margin-top: 8px;
+      font-size: 0.78rem;
+      color: #718096;
+    }
+    .legend-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 4px;
+      vertical-align: middle;
+    }
+
+    /* ── SHAP section outer grid (3T3 | HEK293) ── */
+    .shap-outer {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 36px;
+    }
+    @media (max-width: 900px) { .shap-outer { grid-template-columns: 1fr; } }
+
+    .shap-cell-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    }
+    .shap-cell-card h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #f0f4f8;
+    }
+
+    /* inner two-column: pos | neg */
+    .shap-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .shap-col-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .shap-col-title.pos { background: #fff5f5; color: #c53030; }
+    .shap-col-title.neg { background: #f0fff4; color: #276749; }
+
+    /* bit card (shared) */
+    .bit-card {
+      background: #fafafa;
+      border-radius: 8px;
+      padding: 8px;
+      border-top: 3px solid #ccc;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .bit-card.toxic    { border-top-color: #fc8181; }
+    .bit-card.nontoxic { border-top-color: #68d391; }
+    .bit-card img { width: 100%; border-radius: 4px; }
+    .bit-meta { margin-top: 6px; font-size: 0.74rem; color: #4a5568; }
+    .bit-meta .bit-id { font-weight: 700; font-family: monospace; }
+    .bit-delta { margin-top: 2px; font-size: 0.78rem; font-weight: 700; }
+    .bit-delta.toxic    { color: #c53030; }
+    .bit-delta.nontoxic { color: #276749; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>CytoSafe — Cytotoxicity Predictor</h1>
+  <p>LGBM + ECFP4 | 3T3 &amp; HEK-293 cell lines | Riniker &amp; Landrum XAI</p>
+</header>
+
+<main>
+
+  <!-- Input form -->
+  <div class="input-card">
+    <h2>Enter a SMILES string</h2>
+    <form method="POST" action="/predict">
+      <div class="input-row">
+        <textarea name="smiles" rows="2" placeholder="e.g. CC(C)Cc1ccc(cc1)[C@@H](C)C(=O)O"
+        >{{ smiles or '' }}</textarea>
+        <button type="submit">Predict</button>
+      </div>
+    </form>
+    <div class="examples-table-wrap">
+      <div class="examples-label">10 ground-truth examples from the test set — click to load</div>
+      <table class="examples-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>SMILES</th>
+            <th>3T3 label</th>
+            <th>HEK293 label</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% set examples = [
+            ('COCCC1=NOC(C2CNC2)=N1',                                                    'Toxic',     'Toxic'),
+            ('O=C(CC1=CNC2=NC=C(C3=CC=CC=C3)C=C12)NC1=CC=CN=C1',                       'Toxic',     'Toxic'),
+            ('CC(C)CC1NC(C(=O)O)CC2=CN(CC3CCC3)C3=CC=CC1=C23',                          'Toxic',     'Toxic'),
+            ('CN1C(=O)CCCCC1C(=O)N1CCOCC1',                                              'Non-toxic', 'Non-toxic'),
+            ('O=C1NCC(CCC(=O)N2CCN(C3=CC=CC=C3)CC2)N2CC(NCC3=CC=CC=N3)CC12',            'Non-toxic', 'Non-toxic'),
+            ('COCC(=O)NC1CCC12CCN(C(=O)C1=CC3=CC=CC=C3N1)CC2',                          'Non-toxic', 'Non-toxic'),
+            ('O=CC1=CC=CC=C1C1=CN=C2C=CC=CC2=C1',                                        'Toxic',     'Non-toxic'),
+            ('CC1=CC=C(C(=O)N2CCC3(CC2)C(=NC2CCCCC2)NC(=O)N3C2=CC(F)=CC(F)=C2)C=C1',  'Toxic',     'Non-toxic'),
+            ('CC1=CSC(CN(C)C(=O)CC(C2=CC=CC=C2)C2=CC=C3OCOC3=C2)=N1',                  'Non-toxic', 'Toxic'),
+            ('CCOC1=CC=CC=C1CN1CCOC(COC)C1C1=CC=CC=C1',                                 'Non-toxic', 'Toxic'),
+          ] %}
+          {% for smi, t3t_lbl, hek_lbl in examples %}
+          <tr>
+            <td>{{ loop.index }}</td>
+            <td><span class="ex-smiles" title="{{ smi }}">{{ smi[:55] }}{% if smi|length > 55 %}…{% endif %}</span></td>
+            <td><span class="ex-badge {{ 'toxic' if t3t_lbl == 'Toxic' else 'nontoxic' }}">{{ t3t_lbl }}</span></td>
+            <td><span class="ex-badge {{ 'toxic' if hek_lbl == 'Toxic' else 'nontoxic' }}">{{ hek_lbl }}</span></td>
+            <td><button class="ex-btn" onclick="setSmiles('{{ smi }}')">Use</button></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  {% if error %}
+  <div class="error-banner">{{ error }}</div>
+  {% endif %}
+
+  {% if results %}
+
+  <!-- ── Prediction + heatmap side by side ── -->
+  <div class="cell-grid">
+    {% for cell_line, r in results.items() %}
+    <div class="cell-card">
+      <h3>{{ cell_line }} cell line</h3>
+
+      <div class="pred-row">
+        <span class="badge {% if r.pred_label == 'Cytotoxic' %}badge-toxic{% else %}badge-nontoxic{% endif %}">
+          {{ r.pred_label }}
+        </span>
+        <div class="confidence">
+          P(cytotoxic) = {{ r.prob }}
+          <div class="conf-bar-wrap">
+            <div class="conf-bar {% if r.pred_label == 'Cytotoxic' %}conf-toxic{% else %}conf-nontoxic{% endif %}"
+                 style="width: {{ (r.prob * 100)|int }}%"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sim-map-title">Atom contribution heatmap</div>
+      <div class="sim-map">
+        <img src="data:image/png;base64,{{ r.sim_map }}" alt="Similarity map {{ cell_line }}">
+      </div>
+      <div class="legend">
+        <span><span class="legend-dot" style="background:#d73027"></span>Promotes toxicity</span>
+        <span><span class="legend-dot" style="background:#1a9850"></span>Reduces toxicity</span>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- ── SHAP bar charts: independent row, 3T3 | HEK293 side by side ── -->
+  <div class="cell-grid" style="margin-bottom:28px">
+    {% for cell_line, r in results.items() %}
+    <div class="cell-card">
+      <h3>{{ cell_line }} — Bit contribution (ΔP)</h3>
+      <p style="font-size:0.78rem;color:#718096;margin-bottom:10px">
+        Sorted by |ΔP| high → low. Aligns with substructure cards below.
+        <span style="color:#c53030;font-weight:600">Red = supports toxic</span> &nbsp;
+        <span style="color:#276749;font-weight:600">Green = supports non-toxic</span>
+      </p>
+      <img src="data:image/png;base64,{{ r.shap_chart }}"
+           alt="SHAP chart {{ cell_line }}"
+           style="width:100%;border-radius:8px;border:1px solid #e2e8f0">
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- ── SHAP-style bit contributions: 3T3 | HEK293 side by side ── -->
+  <div style="margin-bottom:8px">
+    <div style="font-size:1.05rem;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:10px">
+      ECFP4 bit contributions
+      <span style="font-size:0.72rem;font-weight:600;padding:3px 10px;border-radius:12px;background:#ebf4ff;color:#2b6cb0">SHAP-style · bit removal method</span>
+    </div>
+  </div>
+
+  <div class="shap-outer">
+    {% for cell_line, r in results.items() %}
+    <div class="shap-cell-card">
+      <h4>{{ cell_line }}</h4>
+      <div class="shap-inner">
+
+        <!-- positive: supports toxicity -->
+        <div>
+          <div class="shap-col-title pos">▲ Supports toxic ({{ r.pos_bits|length }})</div>
+          {% if r.pos_bits %}
+            {% for b in r.pos_bits %}
+            <div class="bit-card toxic">
+              <img src="data:image/png;base64,{{ b.img_b64 }}" alt="bit {{ b.bit }}">
+              <div class="bit-meta"><span class="bit-id">Bit {{ b.bit }}</span></div>
+              <div class="bit-delta toxic">▲ ΔP = {{ '%+.4f'|format(b.delta) }}</div>
+            </div>
+            {% endfor %}
+          {% else %}
+            <div style="font-size:0.8rem;color:#a0aec0;text-align:center;padding:12px">No toxic-supporting bits</div>
+          {% endif %}
+        </div>
+
+        <!-- negative: supports non-toxic -->
+        <div>
+          <div class="shap-col-title neg">▼ Supports non-toxic ({{ r.neg_bits|length }})</div>
+          {% if r.neg_bits %}
+            {% for b in r.neg_bits %}
+            <div class="bit-card nontoxic">
+              <img src="data:image/png;base64,{{ b.img_b64 }}" alt="bit {{ b.bit }}">
+              <div class="bit-meta"><span class="bit-id">Bit {{ b.bit }}</span></div>
+              <div class="bit-delta nontoxic">▼ ΔP = {{ '%+.4f'|format(b.delta) }}</div>
+            </div>
+            {% endfor %}
+          {% else %}
+            <div style="font-size:0.8rem;color:#a0aec0;text-align:center;padding:12px">No non-toxic-supporting bits</div>
+          {% endif %}
+        </div>
+
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+</main>
+
+<script>
+function setSmiles(smi) {
+  document.querySelector('textarea[name=smiles]').value = smi;
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,144 @@
+20:29:23  ======================================================================
+20:29:23  Dataset       : 3T3
+20:29:23  Output dir    : /Users/I753053/Documents/yuhao_codebase/cytosafe/reproduction/model
+20:29:23  HPO iterations: 50
+20:29:23  CV folds      : 5
+20:29:23  Random state  : 42
+20:29:23  Metric        : F1 (pos_label=1, cytotoxic class) — matches author source code
+20:29:23  ======================================================================
+20:29:26  X_train : (19233, 1024)  cytotoxic=3,206  non-toxic=16,027
+20:29:26  X_test  : (4809, 1024)   cytotoxic=801  non-toxic=4,008
+20:29:26  (Test set locked — not used until notebook 05)
+20:29:26  
+20:29:26  Starting Bayesian HPO: 50 iterations × 5-fold CV
+20:29:26  Each line: GP proposes hyperparams → 5-fold CV on TRAIN → mean F1
+20:29:26  
+20:29:41  [Iter   1/50] mean_CV_F1=0.8611  best_so_far=0.8611  ← NEW BEST  | n_estimators=0.7654820824760737  learning_rate=0.0996899578657341  num_leaves=9  max_depth=66  min_child_samples=436  subsample=147  colsample_bytree=0.0003252929307041166  reg_alpha=0.0001015191196076777  reg_lambda=0.7930175461090434
+20:29:58  [Iter   2/50] mean_CV_F1=0.8605  best_so_far=0.8611  | n_estimators=0.629185830986374  learning_rate=0.27922827937905725  num_leaves=11  max_depth=62  min_child_samples=168  subsample=41  colsample_bytree=0.12328179198740331  reg_alpha=0.02064180452030803  reg_lambda=0.5589884416790006
+20:30:11  [Iter   3/50] mean_CV_F1=0.6858  best_so_far=0.8611  | n_estimators=0.7643458710377254  learning_rate=0.012176490535249102  num_leaves=6  max_depth=23  min_child_samples=158  subsample=64  colsample_bytree=0.037008240905721024  reg_alpha=0.004308162214963292  reg_lambda=0.9076255198638874
+20:30:32  [Iter   4/50] mean_CV_F1=0.8652  best_so_far=0.8652  ← NEW BEST  | n_estimators=0.5737099059755859  learning_rate=0.14354208707950802  num_leaves=7  max_depth=48  min_child_samples=418  subsample=108  colsample_bytree=0.24202560100275386  reg_alpha=0.0018956439766024658  reg_lambda=0.6921313002458519
+20:30:41  [Iter   5/50] mean_CV_F1=0.7528  best_so_far=0.8652  | n_estimators=0.6162570141151325  learning_rate=0.02287898124633694  num_leaves=10  max_depth=32  min_child_samples=131  subsample=53  colsample_bytree=0.00011577739016624141  reg_alpha=0.0001314870814378331  reg_lambda=0.5810131236160887
+20:30:53  [Iter   6/50] mean_CV_F1=0.8663  best_so_far=0.8663  ← NEW BEST  | n_estimators=0.9190831912766004  learning_rate=0.2911777046632956  num_leaves=10  max_depth=51  min_child_samples=200  subsample=56  colsample_bytree=0.2507466933248837  reg_alpha=0.1174130027396949  reg_lambda=0.5953269597477608
+20:31:04  [Iter   7/50] mean_CV_F1=0.8433  best_so_far=0.8663  | n_estimators=0.9835656124421499  learning_rate=0.13107515436116274  num_leaves=7  max_depth=23  min_child_samples=157  subsample=131  colsample_bytree=0.006185403252708795  reg_alpha=0.07429340260700566  reg_lambda=0.8387523661634131
+20:31:12  [Iter   8/50] mean_CV_F1=0.7882  best_so_far=0.8663  | n_estimators=0.7552445232092422  learning_rate=0.060036024746812904  num_leaves=9  max_depth=8  min_child_samples=74  subsample=51  colsample_bytree=0.00033949770615763743  reg_alpha=0.001560469803612543  reg_lambda=0.7415639432163017
+20:31:29  [Iter   9/50] mean_CV_F1=0.8564  best_so_far=0.8663  | n_estimators=0.546027248452608  learning_rate=0.21074419549602455  num_leaves=10  max_depth=94  min_child_samples=252  subsample=91  colsample_bytree=0.003059361692352409  reg_alpha=0.00014690761732526227  reg_lambda=0.7261520133742665
+20:31:33  [Iter  10/50] mean_CV_F1=0.6712  best_so_far=0.8663  | n_estimators=0.6847684887002612  learning_rate=0.04468940797636279  num_leaves=5  max_depth=81  min_child_samples=82  subsample=117  colsample_bytree=0.08645785125274702  reg_alpha=0.010413576165988031  reg_lambda=0.8249833651331806
+20:33:16  [Iter  11/50] mean_CV_F1=0.8817  best_so_far=0.8817  ← NEW BEST  | n_estimators=1.0  learning_rate=0.16604151723300528  num_leaves=12  max_depth=5  min_child_samples=500  subsample=150  colsample_bytree=0.0001  reg_alpha=0.00775609933339878  reg_lambda=1.0
+20:33:34  [Iter  12/50] mean_CV_F1=0.8596  best_so_far=0.8817  | n_estimators=0.5  learning_rate=0.24776264871242087  num_leaves=4  max_depth=5  min_child_samples=500  subsample=20  colsample_bytree=1.0  reg_alpha=0.0001379884792637298  reg_lambda=1.0
+20:34:56  [Iter  13/50] mean_CV_F1=0.8811  best_so_far=0.8817  | n_estimators=0.5  learning_rate=0.29999999999999993  num_leaves=10  max_depth=5  min_child_samples=500  subsample=150  colsample_bytree=0.0001  reg_alpha=0.0001  reg_lambda=1.0
+20:35:23  [Iter  14/50] mean_CV_F1=0.8609  best_so_far=0.8817  | n_estimators=0.5537971000074403  learning_rate=0.09173037336639825  num_leaves=12  max_depth=5  min_child_samples=500  subsample=20  colsample_bytree=0.0390506242650218  reg_alpha=0.6727884855965377  reg_lambda=0.5
+20:36:28  [Iter  15/50] mean_CV_F1=0.8785  best_so_far=0.8817  | n_estimators=1.0  learning_rate=0.17116376229725253  num_leaves=9  max_depth=5  min_child_samples=500  subsample=150  colsample_bytree=0.0010656102229399996  reg_alpha=0.009306172797738146  reg_lambda=0.690345343913759
+20:36:58  [Iter  16/50] mean_CV_F1=0.8656  best_so_far=0.8817  | n_estimators=1.0  learning_rate=0.29999999999999993  num_leaves=12  max_depth=5  min_child_samples=500  subsample=150  colsample_bytree=1.0  reg_alpha=1.0  reg_lambda=1.0
+20:38:15  [Iter  17/50] mean_CV_F1=0.8786  best_so_far=0.8817  | n_estimators=0.5  learning_rate=0.18930429004709212  num_leaves=12  max_depth=5  min_child_samples=286  subsample=150  colsample_bytree=0.0001  reg_alpha=0.0001  reg_lambda=0.5
+20:38:54  [Iter  18/50] mean_CV_F1=0.8757  best_so_far=0.8817  | n_estimators=0.6680853501278894  learning_rate=0.1363337390365807  num_leaves=12  max_depth=55  min_child_samples=500  subsample=150  colsample_bytree=0.004785102261801781  reg_alpha=0.0001  reg_lambda=0.5
+20:39:52  [Iter  19/50] mean_CV_F1=0.8820  best_so_far=0.8820  ← NEW BEST  | n_estimators=0.5  learning_rate=0.29999999999999993  num_leaves=8  max_depth=5  min_child_samples=500  subsample=150  colsample_bytree=0.0001  reg_alpha=0.0001  reg_lambda=0.5
+20:40:11  [Iter  20/50] mean_CV_F1=0.8008  best_so_far=0.8820  | n_estimators=0.8223017243444888  learning_rate=0.03032754153288916  num_leaves=6  max_depth=36  min_child_samples=447  subsample=58  colsample_bytree=0.5337736072476229  reg_alpha=0.013367120222148273  reg_lambda=0.9303981790593189
+20:40:29  [Iter  21/50] mean_CV_F1=0.8472  best_so_far=0.8820  | n_estimators=0.9543640226971588  learning_rate=0.06160473469412428  num_leaves=7  max_depth=54  min_child_samples=500  subsample=149  colsample_bytree=0.0001  reg_alpha=0.11023138695579997  reg_lambda=0.5
+20:40:34  [Iter  22/50] mean_CV_F1=0.8182  best_so_far=0.8820  | n_estimators=1.0  learning_rate=0.29999999999999993  num_leaves=3  max_depth=100  min_child_samples=500  subsample=150  colsample_bytree=0.0001  reg_alpha=1.0  reg_lambda=1.0
+20:40:39  [Iter  23/50] mean_CV_F1=0.8181  best_so_far=0.8820  | n_estimators=0.5  learning_rate=0.29999999999999993  num_leaves=3  max_depth=5  min_child_samples=264  subsample=150  colsample_bytree=0.0001  reg_alpha=0.36667354777995426  reg_lambda=0.5
+20:41:01  [Iter  24/50] mean_CV_F1=0.8788  best_so_far=0.8820  | n_estimators=1.0  learning_rate=0.29999999999999993  num_leaves=9  max_depth=5  min_child_samples=197  subsample=150  colsample_bytree=0.0001  reg_alpha=0.0001  reg_lambda=1.0
+20:43:18  [Iter  25/50] mean_CV_F1=0.8343  best_so_far=0.8820  | n_estimators=1.0  learning_rate=0.01  num_leaves=12  max_depth=5  min_child_samples=500  subsample=150  colsample_bytree=0.0001  reg_alpha=0.0001  reg_lambda=1.0
+20:43:38  [Iter  26/50] mean_CV_F1=0.8762  best_so_far=0.8820  | n_estimators=0.8980200882879152  learning_rate=0.1712442684627903  num_leaves=12  max_depth=5  min_child_samples=500  subsample=20  colsample_bytree=0.1298680943709785  reg_alpha=0.0001  reg_lambda=0.5
+20:43:59  [Iter  27/50] mean_CV_F1=0.8756  best_so_far=0.8820  | n_estimators=0.5  learning_rate=0.22509264052606487  num_leaves=9  max_depth=5  min_child_samples=348  subsample=20  colsample_bytree=0.0001  reg_alpha=0.0001  reg_lambda=0.9558307908885135
+20:44:10  [Iter  28/50] mean_CV_F1=0.8534  best_so_far=0.8820  | n_estimators=0.5  learning_rate=0.29999999999999993  num_leaves=10  max_depth=5  min_child_samples=50  subsample=150  colsample_bytree=0.0001  reg_alpha=1.0  reg_lambda=0.9854875384616394
+20:44:46  [Iter  29/50] mean_CV_F1=0.8779  best_so_far=0.8820  | n_estimators=1.0  learning_rate=0.29999999999999993  num_leaves=12  max_depth=100  min_child_samples=500  subsample=150  colsample_bytree=0.0001  reg_alpha=0.0001  reg_lambda=0.7478977440427752
+20:45:03  [Iter  30/50] mean_CV_F1=0.8579  best_so_far=0.8820  | n_estimators=1.0  learning_rate=0.21370650606489672  num_leaves=12  max_depth=5  min_child_samples=50  subsample=150  colsample_bytree=0.0001  reg_alpha=0.0001  reg_lambda=0.8486317902116467
+20:45:23  [Iter  31/50] mean_CV_F1=0.8698  best_so_far=0.8820  | n_estimators=1.0  learning_rate=0.29999999999999993  num_leaves=7  max_depth=5  min_child_samples=325  subsample=150  colsample_bytree=1.0  reg_alpha=0.0001  reg_lambda=0.5
+20:46:00  [Iter  32/50] mean_CV_F1=0.8780  best_so_far=0.8820  | n_estimators=1.0  learning_rate=0.29999999999999993  num_leaves=9  max_depth=56  min_child_samples=500  subsample=150  colsample_bytree=0.0001  reg_alpha=0.0001  reg_lambda=1.0
+20:46:34  [Iter  33/50] mean_CV_F1=0.8655  best_so_far=0.8820  | n_estimators=1.0  learning_rate=0.19985230469838625  num_leaves=10  max_depth=5  min_child_samples=201  subsample=150  colsample_bytree=1.0  reg_alpha=0.0001  reg_lambda=0.5
+20:47:21  [Iter  34/50] mean_CV_F1=0.8774  best_so_far=0.8820  | n_estimators=1.0  learning_rate=0.29999999999999993  num_leaves=12  max_depth=5  min_child_samples=306  subsample=150  colsample_bytree=0.0001  reg_alpha=0.0001  reg_lambda=0.5
+20:47:42  [Iter  35/50] mean_CV_F1=0.8769  best_so_far=0.8820  | n_estimators=1.0  learning_rate=0.14915172785810632  num_leaves=6  max_depth=5  min_child_samples=500  subsample=20  colsample_bytree=0.0001  reg_alpha=0.0001  reg_lambda=1.0
+20:47:49  [Iter  36/50] mean_CV_F1=0.7939  best_so_far=0.8820  | n_estimators=0.9627963374608485  learning_rate=0.09234509623220612  num_leaves=3  max_depth=5  min_child_samples=500  subsample=150  colsample_bytree=1.0  reg_alpha=0.00013740506002597662  reg_lambda=0.5
+20:48:08  [Iter  37/50] mean_CV_F1=0.8775  best_so_far=0.8820  | n_estimators=1.0  learning_rate=0.29999999999999993  num_leaves=6  max_depth=5  min_child_samples=500  subsample=20  colsample_bytree=0.0001  reg_alpha=1.0  reg_lambda=1.0
+20:48:42  [Iter  38/50] mean_CV_F1=0.8253  best_so_far=0.8820  | n_estimators=1.0  learning_rate=0.02801227279644639  num_leaves=12  max_depth=100  min_child_samples=500  subsample=40  colsample_bytree=0.0001  reg_alpha=0.00038133120574907636  reg_lambda=1.0
+20:49:46  [Iter  39/50] mean_CV_F1=0.8005  best_so_far=0.8820  | n_estimators=0.7161931332432878  learning_rate=0.01  num_leaves=8  max_depth=5  min_child_samples=500  subsample=139  colsample_bytree=0.5245447823111933  reg_alpha=0.03589002372673843  reg_lambda=0.6401342791702711
+20:50:35  [Iter  40/50] mean_CV_F1=0.8824  best_so_far=0.8824  ← NEW BEST  | n_estimators=0.5564055293214093  learning_rate=0.20372454806620754  num_leaves=7  max_depth=5  min_child_samples=500  subsample=75  colsample_bytree=0.0001  reg_alpha=0.0001  reg_lambda=0.6259247958229621
+20:51:02  [Iter  41/50] mean_CV_F1=0.8131  best_so_far=0.8824  | n_estimators=0.5371831698733406  learning_rate=0.29999999999999993  num_leaves=6  max_depth=5  min_child_samples=50  subsample=59  colsample_bytree=0.00015924200109390343  reg_alpha=0.0054553680323333  reg_lambda=0.8650654599720514
+20:51:22  [Iter  42/50] mean_CV_F1=0.8747  best_so_far=0.8824  | n_estimators=1.0  learning_rate=0.1647656157461936  num_leaves=12  max_depth=5  min_child_samples=405  subsample=20  colsample_bytree=0.0001  reg_alpha=0.0001  reg_lambda=1.0
+20:51:53  [Iter  43/50] mean_CV_F1=0.8770  best_so_far=0.8824  | n_estimators=0.6624102629930582  learning_rate=0.25208556630028706  num_leaves=8  max_depth=5  min_child_samples=254  subsample=150  colsample_bytree=0.0001  reg_alpha=1.0  reg_lambda=1.0
+20:52:20  [Iter  44/50] mean_CV_F1=0.8679  best_so_far=0.8824  | n_estimators=0.5  learning_rate=0.20207252337541814  num_leaves=11  max_depth=100  min_child_samples=500  subsample=20  colsample_bytree=0.0001  reg_alpha=1.0  reg_lambda=0.5
+20:52:38  [Iter  45/50] mean_CV_F1=0.8554  best_so_far=0.8824  | n_estimators=0.5  learning_rate=0.29999999999999993  num_leaves=7  max_depth=97  min_child_samples=272  subsample=138  colsample_bytree=0.0001  reg_alpha=0.0001  reg_lambda=1.0
+20:52:48  [Iter  46/50] mean_CV_F1=0.8631  best_so_far=0.8824  | n_estimators=1.0  learning_rate=0.29999999999999993  num_leaves=12  max_depth=5  min_child_samples=185  subsample=20  colsample_bytree=0.0001  reg_alpha=1.0  reg_lambda=1.0
+20:54:15  [Iter  47/50] mean_CV_F1=0.8766  best_so_far=0.8824  | n_estimators=0.6207196487202332  learning_rate=0.0604813854167949  num_leaves=9  max_depth=5  min_child_samples=500  subsample=150  colsample_bytree=0.0001  reg_alpha=0.0001  reg_lambda=0.7920147194600884
+20:55:22  [Iter  48/50] mean_CV_F1=0.8779  best_so_far=0.8824  | n_estimators=0.5  learning_rate=0.29999999999999993  num_leaves=10  max_depth=5  min_child_samples=330  subsample=150  colsample_bytree=0.0001  reg_alpha=0.0001  reg_lambda=0.5
+20:55:42  [Iter  49/50] mean_CV_F1=0.8798  best_so_far=0.8824  | n_estimators=1.0  learning_rate=0.29999999999999993  num_leaves=7  max_depth=39  min_child_samples=500  subsample=20  colsample_bytree=0.0001  reg_alpha=0.0001  reg_lambda=1.0
+20:56:49  [Iter  50/50] mean_CV_F1=0.8813  best_so_far=0.8824  | n_estimators=0.5  learning_rate=0.27468926745509953  num_leaves=12  max_depth=36  min_child_samples=500  subsample=150  colsample_bytree=0.0001  reg_alpha=0.0001  reg_lambda=0.5
+20:57:11  
+20:57:11  ======================================================================
+20:57:11  HPO COMPLETE
+20:57:11    Total time      : 27.8 min
+20:57:11    Iterations run  : 50/50
+20:57:11    Winning iter    : 40
+20:57:11    Best CV F1      : 0.8824 ± 0.0062
+20:57:11    Best hyperparams:
+20:57:11      colsample_bytree       = 0.5564055293214093
+20:57:11      learning_rate          = 0.20372454806620754
+20:57:11      max_depth              = 7
+20:57:11      min_child_samples      = 5
+20:57:11      n_estimators           = 500
+20:57:11      num_leaves             = 75
+20:57:11      reg_alpha              = 0.0001
+20:57:11      reg_lambda             = 0.0001
+20:57:11      subsample              = 0.6259247958229621
+20:57:11  
+20:57:11  All iterations ranked by mean CV F1:
+20:57:11    Rank   Iter   mean_CV_F1
+20:57:11    1      40     0.8824  ← BEST
+20:57:11    2      19     0.8820
+20:57:11    3      11     0.8817
+20:57:11    4      50     0.8813
+20:57:11    5      13     0.8811
+20:57:11    6      49     0.8798
+20:57:11    7      24     0.8788
+20:57:11    8      17     0.8786
+20:57:11    9      15     0.8785
+20:57:11    10     32     0.8780
+20:57:11    11     29     0.8779
+20:57:11    12     48     0.8779
+20:57:11    13     37     0.8775
+20:57:11    14     34     0.8774
+20:57:11    15     43     0.8770
+20:57:11    16     35     0.8769
+20:57:11    17     47     0.8766
+20:57:11    18     26     0.8762
+20:57:11    19     18     0.8757
+20:57:11    20     27     0.8756
+20:57:11    21     42     0.8747
+20:57:11    22     31     0.8698
+20:57:11    23     44     0.8679
+20:57:11    24     6      0.8663
+20:57:11    25     16     0.8656
+20:57:11    26     33     0.8655
+20:57:11    27     4      0.8652
+20:57:11    28     46     0.8631
+20:57:11    29     1      0.8611
+20:57:11    30     14     0.8609
+20:57:11    31     2      0.8605
+20:57:11    32     12     0.8596
+20:57:11    33     30     0.8579
+20:57:11    34     9      0.8564
+20:57:11    35     45     0.8554
+20:57:11    36     28     0.8534
+20:57:11    37     21     0.8472
+20:57:11    38     7      0.8433
+20:57:11    39     25     0.8343
+20:57:11    40     38     0.8253
+20:57:11    41     22     0.8182
+20:57:11    42     23     0.8181
+20:57:11    43     41     0.8131
+20:57:11    44     20     0.8008
+20:57:11    45     39     0.8005
+20:57:11    46     36     0.7939
+20:57:11    47     8      0.7882
+20:57:11    48     5      0.7528
+20:57:11    49     3      0.6858
+20:57:11    50     10     0.6712
+20:57:11  ======================================================================
+20:57:11  
+20:57:11  Final model refitted on full X_train with best hyperparams.
+20:57:11  Model saved  : ../model/3T3_lgbm_ecfp4.joblib
+20:57:11  Params saved : ../model/3T3_best_params.json
+20:57:11  Full log     : ../model/3T3_training.log
+20:57:11  
+20:57:11  Next: run notebook 05 to evaluate on the test set (Table 1 metrics).
+20:57:11  ======================================================================

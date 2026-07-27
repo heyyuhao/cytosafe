@@ -1,0 +1,29 @@
+name: cytosafe
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - pip
+  - rdkit>=2022.09
+  - numpy>=1.23,<2
+  - pandas>=1.5
+  - scipy>=1.9
+  - matplotlib>=3.6
+  - seaborn>=0.12
+  - scikit-learn>=1.4,<2
+  - joblib>=1.2
+  - tqdm>=4.64
+  - ipykernel
+  - jupyter
+  - chembl_structure_pipeline
+  - lightgbm>=3.3,<5
+  - xgboost>=2.0,<3
+  - pip:
+    - imbalanced-learn>=0.13        # 0.12.x incompatible with sklearn>=1.6 (_safe_tags removed)
+    - scikit-optimize>=0.10
+    - Pillow>=9
+    - molvs
+    - pycaret>=4.0.0a3              # 4.x requires Python>=3.11; 3.x has conflicting pandas/scipy pins
+    - git+https://github.com/mqcomplab/bitbirch.git  # not on PyPI; requires Python>=3.11
+    - flask>=3.0

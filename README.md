@@ -1,5 +1,7 @@
 # CytoSafe — Cytotoxicity Prediction
 
+Reproduction of **[Cyto-Safe: A Machine Learning Tool for Early Cytotoxicity Prediction](https://pubs.acs.org/jcisd8/article/64/24/9056/884297/Cyto-Safe-A-Machine-Learning-Tool-for-Early)** (J. Chem. Inf. Model., 2024). Original web app: [cytosafe.labmol.com.br](https://cytosafe.labmol.com.br/).
+
 QSAR model for cytotoxicity classification in 3T3 and HEK-293 cell lines using LGBM + ECFP4 fingerprints, with Riniker & Landrum XAI.
 
 ## Setup

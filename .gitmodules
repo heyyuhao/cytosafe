@@ -1,0 +1,6 @@
+[submodule "author_cytosafe"]
+	path = author_cytosafe
+	url = https://github.com/LabMolUFG/cytosafe.git
+[submodule "author_pipeline"]
+	path = author_pipeline
+	url = https://github.com/LabMolUFG/cheminformatics_pipeline.git

@@ -1,52 +1,61 @@
-# CytoSafe — Cytotoxicity Prediction
+# CytoSafe — Cytotoxicity Prediction & Uncertainty Estimation
 
-Reproduction of **[Cyto-Safe: A Machine Learning Tool for Early Cytotoxicity Prediction](https://pubs.acs.org/jcisd8/article/64/24/9056/884297/Cyto-Safe-A-Machine-Learning-Tool-for-Early)** (J. Chem. Inf. Model., 2024). Original web app: [cytosafe.labmol.com.br](https://cytosafe.labmol.com.br/).
+Research codebase studying cytotoxicity prediction and uncertainty estimation for drug discovery, using the 3T3 and HEK-293 cell line datasets from PubChem.
 
-QSAR model for cytotoxicity classification in 3T3 and HEK-293 cell lines using LGBM + ECFP4 fingerprints, with Riniker & Landrum XAI.
+---
+
+## Repository Structure
+
+```
+cytosafe/
+├── author_cytosafe/          # Original author's datasets, notebooks, and pre-trained models
+├── author_pipeline/          # Original author's reusable pipeline functions
+├── author_DRUE/              # DRUE source code (git submodule: a-Fomalhaut-a/DRUE)
+├── cytosafe_1_reproduction/  # Part 1: reproduction of the CytoSafe paper
+├── cytosafe_2_uncertainty_estimation/  # Part 2: uncertainty estimation benchmark
+├── environment.yml           # Conda environment (cytosafe)
+└── images/
+```
+
+---
+
+## Part 1 — CytoSafe Reproduction
+
+**`cytosafe_1_reproduction/`**
+
+Reproduces [Cyto-Safe: A Machine Learning Tool for Early Cytotoxicity Prediction](https://pubs.acs.org/doi/10.1021/acs.jcim.4c01811) (J. Chem. Inf. Model., 2024).
+
+- QSAR model: LGBM + ECFP4 fingerprints (radius=2, 1024 bits)
+- Datasets: 3T3 (24,042 compounds) and HEK-293 (36,846 compounds)
+- Includes: fingerprint generation, model training, evaluation against paper Table 1, and a web app for SMILES-based prediction with atom-level XAI heatmaps
+
+See `cytosafe_1_reproduction/README.md` for details.
+
+---
+
+## Part 2 — Uncertainty Estimation Benchmark
+
+**`cytosafe_2_uncertainty_estimation/`**
+
+Adapts and benchmarks four uncertainty estimation (UE) methods on cytotoxicity classification, motivated by [DRUE (Xu et al., 2026)](https://arxiv.org/abs/2601.19341).
+
+- Methods: Entropy, MC Dropout, BNN (Laplace approximation), DRUE
+- OOD construction: Bemis-Murcko scaffold split and Tanimoto-distance split
+- 8 experiments: 2 datasets × 2 split methods × within/cross-cell-line
+- Evaluation: OOD detection AUC (ID-test=0, OOD-test=1, score=uncertainty)
+
+Key finding: Tanimoto-based OOD split creates a harder and more informative domain gap than scaffold split; DRUE achieves best OOD detection AUC on tanimoto experiments.
+
+See `cytosafe_2_uncertainty_estimation/README.md` for details.
+
+---
 
 ## Setup
 
 ```bash
 conda env create -f environment.yml
 conda activate cytosafe
+
+# Pull submodule
+git submodule update --init
 ```
-
-## Repository structure
-
-| Folder | Contents |
-|---|---|
-| `author_cytosafe/` | Original author's notebooks, datasets, and pre-trained models as published |
-| `author_pipeline/` | Original author's reusable pipeline functions (`utils_binary.py`, `utils_fp.py`) |
-| `reproduction/` | Our reproduction pipeline — data, fingerprints, training, evaluation, web app |
-
-## Reproduction
-
-All scripts are in `reproduction/scripts/`. Run in order:
-
-**1. Generate fingerprints**
-```bash
-# Run reproduction/scripts/03_fingerprints.ipynb
-# Reads from author_cytosafe/Datasets/ and writes to reproduction/data/fp/
-```
-
-**2. Train models** (~1 hour per cell line)
-```bash
-python 04_train_lgbm.py --dataset 3T3
-python 04_train_lgbm.py --dataset HEK293
-# Models saved to reproduction/model/
-```
-
-**3. (Optional) Evaluate against paper Table 1**
-```bash
-# Run reproduction/scripts/05_evaluation.ipynb
-```
-
-**4. Start the web app**
-```bash
-bash 07_start_web_server.sh
-# Open http://localhost:5050
-```
-
-The web app accepts any SMILES string and returns the cytotoxicity prediction, atom-level heatmap, and top contributing molecular fragments for both cell lines.
-
-![Web App Screenshot](images/web.png)

@@ -19,6 +19,7 @@ dependencies:
   - chembl_structure_pipeline
   - lightgbm>=3.3,<5
   - xgboost>=2.0,<3
+  - pytorch>=2.0                   # DRUE / MC Dropout / BNN backbone
   - pip:
     - imbalanced-learn>=0.13        # 0.12.x incompatible with sklearn>=1.6 (_safe_tags removed)
     - scikit-optimize>=0.10
@@ -27,3 +28,5 @@ dependencies:
     - pycaret>=4.0.0a3              # 4.x requires Python>=3.11; 3.x has conflicting pandas/scipy pins
     - git+https://github.com/mqcomplab/bitbirch.git  # not on PyPI; requires Python>=3.11
     - flask>=3.0
+    - laplace-torch>=0.1            # post-hoc Laplace approximation for BNN method
+    - curvlinops-for-pytorch>=2.0,<3.0  # laplace-torch dependency; 3.x breaks _base API

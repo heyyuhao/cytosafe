@@ -1,5 +1,7 @@
 # Generated data — not committed
-reproduction/data/
+cytosafe_1_reproduction/data/
+cytosafe_2_uncertainty_estimation/data/splits
+cytosafe_2_uncertainty_estimation/results*
 
 # Python
 __pycache__/

@@ -4,3 +4,6 @@
 [submodule "author_pipeline"]
 	path = author_pipeline
 	url = https://github.com/LabMolUFG/cheminformatics_pipeline.git
+[submodule "author_DRUE"]
+	path = author_DRUE
+	url = https://github.com/a-Fomalhaut-a/DRUE.git

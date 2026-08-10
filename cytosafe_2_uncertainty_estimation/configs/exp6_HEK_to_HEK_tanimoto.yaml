@@ -1,0 +1,4 @@
+exp_name: exp6_HEK_to_HEK_tanimoto
+train_dataset: HEK
+test_dataset: HEK
+split_method: tanimoto

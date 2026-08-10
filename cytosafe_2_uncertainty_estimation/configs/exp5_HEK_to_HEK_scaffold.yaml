@@ -1,0 +1,4 @@
+exp_name: exp5_HEK_to_HEK_scaffold
+train_dataset: HEK
+test_dataset: HEK
+split_method: scaffold

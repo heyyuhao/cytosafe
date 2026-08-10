@@ -1,0 +1,4 @@
+exp_name: exp1_3T3_to_3T3_scaffold
+train_dataset: 3T3
+test_dataset: 3T3
+split_method: scaffold

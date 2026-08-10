@@ -1,0 +1,4 @@
+exp_name: exp7_HEK_to_3T3_scaffold
+train_dataset: HEK
+test_dataset: 3T3
+split_method: scaffold

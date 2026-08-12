@@ -1,0 +1,4 @@
+exp_name: exp9_3T3_to_random_tanimoto
+train_dataset: 3T3
+test_dataset: random
+split_method: tanimoto

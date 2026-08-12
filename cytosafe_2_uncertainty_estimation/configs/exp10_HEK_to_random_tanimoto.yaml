@@ -1,0 +1,4 @@
+exp_name: exp10_HEK_to_random_tanimoto
+train_dataset: HEK
+test_dataset: random
+split_method: tanimoto

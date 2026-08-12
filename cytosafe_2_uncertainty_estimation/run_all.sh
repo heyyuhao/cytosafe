@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
-# Run all 8 uncertainty estimation experiments sequentially.
-# Usage: bash run_all.sh
+# Run all uncertainty estimation experiments sequentially.
+# Usage:
+#   bash run_all.sh          — run all 10 experiments
+#   bash run_all.sh sanity   — run only Tier-1 sanity checks (exp9, exp10)
 # Logs: results/{exp_name}/run.log
 
 set -euo pipefail
@@ -9,7 +11,7 @@ PYTHON=/opt/homebrew/anaconda3/envs/cytosafe/bin/python
 SCRIPT=run_experiment.py
 CONFIGS_DIR=configs
 
-CONFIGS=(
+CONFIGS_MAIN=(
     exp1_3T3_to_3T3_scaffold.yaml
     exp2_3T3_to_3T3_tanimoto.yaml
     exp3_3T3_to_HEK_scaffold.yaml
@@ -19,6 +21,17 @@ CONFIGS=(
     exp7_HEK_to_3T3_scaffold.yaml
     exp8_HEK_to_3T3_tanimoto.yaml
 )
+
+CONFIGS_SANITY=(
+    exp9_3T3_to_random_tanimoto.yaml
+    exp10_HEK_to_random_tanimoto.yaml
+)
+
+if [[ "${1:-}" == "sanity" ]]; then
+    CONFIGS=("${CONFIGS_SANITY[@]}")
+else
+    CONFIGS=("${CONFIGS_MAIN[@]}" "${CONFIGS_SANITY[@]}")
+fi
 
 for cfg in "${CONFIGS[@]}"; do
     exp_name="${cfg%.yaml}"

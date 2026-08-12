@@ -94,13 +94,13 @@ class DRUEModel(nn.Module):
 
         self.block1 = nn.Sequential(       # 1024 → 512  (= m1)
             nn.Linear(input_dim, 512),
-            nn.BatchNorm1d(512),
+            nn.LayerNorm(512),
             nn.ReLU(inplace=True),
             nn.Dropout(0.3),
         )
         self.block2 = nn.Sequential(       # 512 → 256  (= m0)
             nn.Linear(512, 256),
-            nn.BatchNorm1d(256),
+            nn.LayerNorm(256),
             nn.ReLU(inplace=True),
             nn.Dropout(0.3),
         )

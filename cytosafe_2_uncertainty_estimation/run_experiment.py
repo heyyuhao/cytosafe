@@ -19,7 +19,7 @@ import torch
 import yaml
 from torch.utils.data import DataLoader, TensorDataset
 
-from yuhao_codebase.cytosafe.cytosafe_UE.evaluate import compute_ood_roc, plot_roc, save_json
+from evaluate import compute_ood_roc, plot_roc, save_json
 
 DEVICE      = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 SPLITS_DIR  = Path(__file__).parent / "data" / "splits"
@@ -70,10 +70,10 @@ def get_softmax(model, X: np.ndarray, batch_size: int = 256) -> np.ndarray:
 # ---------------------------------------------------------------------------
 
 def run(cfg: dict):
-    import yuhao_codebase.cytosafe.cytosafe_UE.models.entropy    as entropy_mod
-    import yuhao_codebase.cytosafe.cytosafe_UE.models.mc_dropout as mc_mod
-    import yuhao_codebase.cytosafe.cytosafe_UE.models.bnn_laplace as bnn_mod
-    import yuhao_codebase.cytosafe.cytosafe_UE.models.drue       as drue_mod
+    import models.entropy    as entropy_mod
+    import models.mc_dropout as mc_mod
+    import models.bnn_laplace as bnn_mod
+    import models.drue       as drue_mod
 
     exp_name = cfg["exp_name"]
     data     = load_splits(cfg)

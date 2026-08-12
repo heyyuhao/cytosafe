@@ -1,11 +1,19 @@
 """Method 3 — BNN via Laplace approximation.
 
-Fits a Laplace approximation post-hoc on the last linear layer of the
-already-trained MLP. No retraining required.
+Uses last-layer Laplace with a full Hessian over the 514-parameter
+final Linear(256→2) layer. This is the theoretically valid setting:
+- The last layer is linear-logistic regression over learned features
+- A Gaussian posterior is well-defined for linear models
+- pred_type="glm" (Taylor linearization) is exact for the last layer
 
-Uncertainty score = variance of P(toxic) across N_SAMPLES weight posterior
-samples. This is the native BNN uncertainty — not entropy of a point
-prediction, but spread of predictions under the weight distribution.
+Full-network Laplace with diagonal Hessian over 656K params was previously
+used — this is invalid because the diagonal approximation loses all
+correlations, and the GLM linearization is incorrect for nonlinear layers.
+
+Uncertainty score = entropy of the mean predictive distribution across
+N_SAMPLES posterior weight samples. H(E[p]) captures how much the
+averaged posterior pushes the prediction toward 0.5 — more robust than
+variance (which is bounded by 0.25 and misses confidently-wrong OOD).
 
 Requires: pip install laplace-torch
 """
@@ -15,8 +23,8 @@ import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader, TensorDataset
 
-DEVICE     = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-N_SAMPLES  = 100   # number of weight posterior samples
+DEVICE    = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+N_SAMPLES = 100
 
 
 class _LogitsOnly(nn.Module):
@@ -35,7 +43,6 @@ def fit_laplace(model, X_train: np.ndarray, y_train: np.ndarray,
     """Fit a last-layer Laplace approximation and return the LA object."""
     from laplace import Laplace
 
-    # Wrap model so laplace-torch gets plain logit tensor, not (logits, features)
     wrapped = _LogitsOnly(model).to(DEVICE)
 
     train_loader = DataLoader(
@@ -46,8 +53,10 @@ def fit_laplace(model, X_train: np.ndarray, y_train: np.ndarray,
         batch_size=batch_size, shuffle=False,
     )
 
-    la = Laplace(wrapped, likelihood="classification", subset_of_weights="all",
-                 hessian_structure="diag")
+    # last_layer + full Hessian: valid and efficient (only ~514 parameters)
+    la = Laplace(wrapped, likelihood="classification",
+                 subset_of_weights="last_layer",
+                 hessian_structure="full")
     la.fit(train_loader)
     la.optimize_prior_precision(method="marglik")
     return la
@@ -55,29 +64,23 @@ def fit_laplace(model, X_train: np.ndarray, y_train: np.ndarray,
 
 def uncertainty_scores(la, X: np.ndarray, n_samples: int = N_SAMPLES,
                        batch_size: int = 256) -> np.ndarray:
-    """Return variance of P(toxic) across posterior weight samples.
+    """Return entropy of the mean predictive distribution.
 
-    For each input x:
-      - Draw n_samples weight vectors from the Laplace posterior
-      - Each gives a different P(toxic) prediction
-      - Variance across those predictions = epistemic uncertainty
-
-    High variance → the posterior is uncertain about this input → likely OOD.
-    Range: [0, 0.25]  (variance of a Bernoulli is p*(1-p), max at p=0.5)
+    Draws n_samples weight vectors from the last-layer posterior,
+    runs each through the network via GLM linearization (valid for
+    last-layer), and returns H(E[p]) — entropy of the averaged softmax.
     """
     loader = DataLoader(
         TensorDataset(torch.tensor(X, dtype=torch.float32)),
         batch_size=batch_size,
     )
-    variances = []
+    entropies = []
     for (xb,) in loader:
         # samples shape: (n_samples, batch, n_classes)
         samples = la.predictive_samples(
             xb.to(DEVICE), pred_type="glm", n_samples=n_samples
         )
-        # Take P(toxic) = class index 1, shape: (n_samples, batch)
-        p_toxic = samples[:, :, 1].detach().cpu().numpy()
-        # Variance across samples for each input, shape: (batch,)
-        var = p_toxic.var(axis=0)
-        variances.append(var)
-    return np.concatenate(variances)
+        mean_p = samples.mean(dim=0).detach().cpu().numpy()   # (batch, C)
+        h = -np.sum(mean_p * np.log(mean_p + 1e-12), axis=1)
+        entropies.append(h)
+    return np.concatenate(entropies)

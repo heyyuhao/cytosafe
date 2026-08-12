@@ -1,4 +1,10 @@
-"""Shared MLP backbone used by all four uncertainty methods."""
+"""Shared MLP backbone used by all four uncertainty methods.
+
+Uses LayerNorm instead of BatchNorm so that MC Dropout inference is valid:
+BatchNorm in eval() mode uses fixed running statistics, making all T dropout
+passes identical. LayerNorm normalises per-sample and is unaffected by
+eval/train mode, so each stochastic pass differs meaningfully.
+"""
 
 import torch
 import torch.nn as nn
@@ -10,13 +16,13 @@ class MLP(nn.Module):
         super().__init__()
         self.block1 = nn.Sequential(       # 1024 → 512  (= m1, shallower)
             nn.Linear(input_dim, 512),
-            nn.BatchNorm1d(512),
+            nn.LayerNorm(512),
             nn.ReLU(inplace=True),
             nn.Dropout(dropout),
         )
         self.block2 = nn.Sequential(       # 512 → 256  (= m0, deeper)
             nn.Linear(512, 256),
-            nn.BatchNorm1d(256),
+            nn.LayerNorm(256),
             nn.ReLU(inplace=True),
             nn.Dropout(dropout),
         )
